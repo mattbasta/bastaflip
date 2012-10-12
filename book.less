@@ -177,7 +177,6 @@ article.book {
 
 /* Temp Styles */
 article.book {
-    background: brown;
     width: 320px;
     height: 480px;
 
@@ -189,13 +188,17 @@ article.book {
     .page {background: green;}
 
     .cover, .page {
-        width: 320px;
-        height: 480px;
+        width: 100%;
+        height: 100%;
+    }
+    &.open .cover,
+    &.open .page {
+        width: 50%;
     }
 }
 @media(min-width: 601px) {
     article.book .fold {
-        width: 640px;
-        height: 480px;
+        width: 100%;
+        height: 100%;
     }
 }
