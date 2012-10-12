@@ -32,6 +32,7 @@
 
 article.book {
     margin: 0 auto;
+    position: relative;
 
     .transition(width 0.5s ease);
 
@@ -191,7 +192,9 @@ article.book {
         width: 320px;
         height: 480px;
     }
-    &.open .fold {
+}
+@media(min-width: 601px) {
+    article.book .fold {
         width: 640px;
         height: 480px;
     }

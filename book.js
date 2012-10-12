@@ -18,7 +18,7 @@ $(function() {
             var this_page = book.find(".active");
                 n_page = this_page.next();
 
-            if(!n_page) // We're at the end of the book.
+            if(!n_page.length) // We're at the end of the book.
                 return;
 
             this_page.addClass("passed").removeClass("active");
@@ -36,7 +36,7 @@ $(function() {
             var this_page = book.find(".active");
                 previous_page = this_page.prev();
 
-            if(!previous_page) // We're at the beginning of the book.
+            if(!previous_page.length) // We're at the beginning of the book.
                 return;
 
             this_page.removeClass("active");
