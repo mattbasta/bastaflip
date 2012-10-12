@@ -1,0 +1,202 @@
+.transition(@arg) {
+    transition: @arg;
+    -moz-transition: @arg;
+    -webkit-transition: @arg;
+}
+.transform(@arg) {
+    transform: @arg;
+    -moz-transform: @arg;
+    -webkit-transform: @arg;
+}
+.transform-origin(@arg) {
+    transform-origin: @arg;
+    -moz-transform-origin: @arg;
+    -webkit-transform-origin: @arg;
+}
+
+.transition-transform-setup() {
+    -moz-transition: -moz-transform 0.5s ease;
+    -webkit-transition: -webkit-transform 0.5s ease;
+    transition: transform 0.5s ease;
+    .transform(rotateY(0));
+
+    .transform-origin(bottom left);
+}
+
+
+article.book {
+    margin: 0 auto;
+
+    .transition(width 0.5s ease);
+
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+
+    /*transform: translateY(100px) rotateX(-15deg) rotateY(0deg);
+    -moz-transform: translateY(100px) rotateX(-15deg) rotateY(0deg);
+    -webkit-transform: translateY(100px) rotateX(-15deg) rotateY(0deg);*/
+
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    user-select: none;
+
+    &, .fold {
+        -webkit-perspective: 1000px;
+        -moz-perspective: 1000px;
+        perspective: 1000px;
+    }
+
+    .page, .cover {
+        backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .cover, .fold {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        .page, &.cover {.transition-transform-setup();}
+
+        &.active {
+            display: block;
+            z-index: 2;
+        }
+
+    }
+    .active {
+            & + .fold, & + .cover {display: block;}
+    }
+
+}
+
+@media(max-width: 600px) {  // Phone
+    article.book {
+        -webkit-perspective-origin: 80% 50%;
+        -moz-perspective-origin: 80% 50%;
+        perspective-origin: 80% 50%;
+
+        .fold .extra {display: none;}
+
+        .fold, .cover {
+            .transition-transform-setup();
+            .transform(rotateY(0));
+        }
+
+        .active:first-child {
+            & + .fold, & + .cover {display: none;}
+        }
+
+        .passed {
+            .transform(rotateY(-90deg));
+            &.previous {display: block;}
+        }
+    }
+}
+
+@media(min-width: 601px) {  // Tablet/Desktop
+    article.book {
+
+        .fold {
+            .page {
+                position: absolute;
+                z-index: 1;
+            }
+
+            .page:first-child {
+                .transform-origin(bottom right);
+                .transform(rotateY(180deg));
+                left: 0;
+
+                & + .page {
+                    right: 0;
+                }
+            }
+        }
+
+        .cover:first-child {
+            &:hover {.transform(rotateY(-12deg));}
+        }
+        .cover:last-child {
+            .transform-origin(bottom right);
+            right: 0;
+            left: auto;
+            .transform(rotateY(180deg));
+
+            &.active {.transform(rotateY(0));}
+            &:hover {.transform(rotateY(12deg));}
+        }
+
+        .active {
+            z-index: 2;
+
+            .page {z-index: 2;}
+
+            & > .page:first-child {
+                .transform(rotateY(0deg));
+
+                &:hover {.transform(rotateY(12deg));}
+                & + .page {
+                    .transform(rotateY(0));
+                    &:hover {.transform(rotateY(-12deg));}
+                }
+            }
+        }
+
+        // Show the page behind the current fold.
+        .active + .fold,
+        .active + .cover {
+            z-index: 1;
+        }
+
+        .passed {
+            z-index: 1;
+
+            &.previous {display: block;}
+            &.cover:first-child {
+                .transform(rotateY(-180deg));
+            }
+            .page:first-child {.transform(rotateY(0));}
+            .page:last-child {.transform(rotateY(-180deg));}
+
+        }
+
+        .active,
+        .passed {
+            right: auto;
+            left: 0;
+        }
+        .cover + .active {
+            right: 0;
+            left: auto;
+        }
+
+    }
+}
+
+/* Temp Styles */
+article.book {
+    background: brown;
+    width: 320px;
+    height: 480px;
+
+    &.open {
+        width: 640px;
+    }
+
+    .cover {background: red;}
+    .page {background: green;}
+
+    .cover,
+    .page {
+        width: 320px;
+        height: 480px;
+    }
+    .open .fold {
+        width: 640px;
+        height: 480px;
+    }
+}
