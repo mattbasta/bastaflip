@@ -23,6 +23,12 @@
     .transform-origin(bottom left);
 }
 
+.backface-visibility(@arg) {
+    backface-visibility: @arg;
+    -moz-backface-visibility: @arg;
+    -webkit-backface-visibility: @arg;
+}
+
 
 article.book {
     margin: 0 auto;
@@ -32,10 +38,6 @@ article.book {
     transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
-
-    /*transform: translateY(100px) rotateX(-15deg) rotateY(0deg);
-    -moz-transform: translateY(100px) rotateX(-15deg) rotateY(0deg);
-    -webkit-transform: translateY(100px) rotateX(-15deg) rotateY(0deg);*/
 
     -webkit-user-select: none;
     -moz-user-select: -moz-none;
@@ -47,11 +49,7 @@ article.book {
         perspective: 1000px;
     }
 
-    .page, .cover {
-        backface-visibility: hidden;
-        -moz-backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-    }
+    .fold, .page, .cover {.backface-visibility(hidden);}
 
     .cover, .fold {
         display: none;
@@ -68,7 +66,7 @@ article.book {
 
     }
     .active {
-            & + .fold, & + .cover {display: block;}
+        & + .fold, & + .cover {display: block;}
     }
 
 }
@@ -110,11 +108,8 @@ article.book {
                 .transform-origin(bottom right);
                 .transform(rotateY(180deg));
                 left: 0;
-
-                & + .page {
-                    right: 0;
-                }
             }
+            .page:last-child {right: 0;}
         }
 
         .cover:first-child {
@@ -126,8 +121,10 @@ article.book {
             left: auto;
             .transform(rotateY(180deg));
 
-            &.active {.transform(rotateY(0));}
-            &:hover {.transform(rotateY(12deg));}
+            &.active {
+                .transform(rotateY(0));
+                &:hover {.transform(rotateY(12deg));}
+            }
         }
 
         .active {
@@ -161,11 +158,11 @@ article.book {
             }
             .page:first-child {.transform(rotateY(0));}
             .page:last-child {.transform(rotateY(-180deg));}
+            //&.clip .page:last-child {display: none;}
 
         }
 
-        .active,
-        .passed {
+        .active, .passed {
             right: auto;
             left: 0;
         }
@@ -190,12 +187,11 @@ article.book {
     .cover {background: red;}
     .page {background: green;}
 
-    .cover,
-    .page {
+    .cover, .page {
         width: 320px;
         height: 480px;
     }
-    .open .fold {
+    &.open .fold {
         width: 640px;
         height: 480px;
     }

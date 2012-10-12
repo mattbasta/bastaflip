@@ -46,7 +46,7 @@ $(function() {
 
         function any_page() {
             var active = book.find(".active");
-            book.toggleClass("open", !active.hasClass("cover") && !is_mobile);
+            book.toggleClass("open", !active.hasClass("cover") && !is_mobile.matches);
 
             book.find(".previous").removeClass("previous");
             active.prev().addClass("previous");
@@ -60,7 +60,7 @@ $(function() {
 
         // The user clicked to the previous page.
         book.on("click", ".fold .page:first-child, .cover:last-child", function(e) {
-            if(is_mobile && !$(this).hasClass("cover"))  // Clicks are always to the next page on mobile.
+            if(is_mobile.matches && !$(this).hasClass("cover"))  // Clicks are always to the next page on mobile.
                 next_page();
             else
                 prev_page();
